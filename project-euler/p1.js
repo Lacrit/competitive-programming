@@ -17,7 +17,7 @@ const multiplesOfXSum = (x) => {
 total = multiplesOfXSum(3) + multiplesOfXSum(5) - multiplesOfXSum(15);
 console.log('total', total)
 
-// thanks for reminding about the formula for Sum(n), Ruslan 
+// special thanks to Ewa and Ruslan :>
 
 let total1 = 0; 
 // 3 + 6 + .. + 999 = 3 * (1 + 2 + 3 + .. + 333) = 3 * ((333*(333+1))/2)
