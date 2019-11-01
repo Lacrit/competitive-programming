@@ -1,27 +1,26 @@
-// bruteforce
+let _ = require('lodash');
+const n = 999;
 
-let sum1 = 0;
-for ( let i = 1; i < 1000; i++ )  {
-    if (i%3 == 0 || i%5 == 0) sum1+=i;
-}
-console.log('sum1', sum1)
+// bruteforce o(n)
 
-// another bruteforce ?? 
+const iter = _.range(1, n+1); // defines n elements 
+const isDivisibleBy = (i, x) =>  i % x == 0; // constant check 
+const isDivisibleBy3OR5 = i => isDivisibleBy(i, 3) || isDivisibleBy(i, 5); // constant check 
+const sum = (a, b) => a + b; // constant sum 
 
-let total = 0; 
-const multiplesOfXSum = (x) => { 
-    let sum = 0;
-    for ( let i = x; i < 1000; i += x) { sum += i; } 
-    return sum;
-}
-total = multiplesOfXSum(3) + multiplesOfXSum(5) - multiplesOfXSum(15);
-console.log('total', total)
+const totalSumMethodOne = iter.filter(isDivisibleBy3OR5).reduce(sum); // filters and sums n elements -> o(n) 
+console.log('totalSumMethodOne', totalSumMethodOne)
 
-// special thanks to Ewa and Ruslan :>
+// another bruteforce o(n) (very lodash)
 
-let total1 = 0; 
-// 3 + 6 + .. + 999 = 3 * (1 + 2 + 3 + .. + 333) = 3 * ((333*(333+1))/2)
-// 5 + 10 + ... + 995 = 5 * (1 + 2 + 3 + .. + 199) = 5 * ((199*(199+1))/2)
-// 15 + 30 + ... + 990 = 15 * (1 + 2 + 3 + .. + 66) = 15 * ((66*(66+1))/2)
-const multiplesOfXYSum = (x, n) => x*((Math.floor(n/x)*(Math.floor(n/x)+1))/2)
-total = multiplesOfXYSum(3, 1000) + multiplesOfXYSum(5, 1000) - multiplesOfXYSum(15, 1000);
+const totalSumMethodTwo = _.sumBy(iter, el => isDivisibleBy3OR5(el) && el );
+console.log('totalSumMethodTwo', totalSumMethodTwo);
+
+// yeeei o(1) 
+
+// // 3 + 6 + .. + 999 = 3 * (1 + 2 + 3 + .. + 333) = 3 * ((333*(333+1))/2)
+// // 5 + 10 + ... + 995 = 5 * (1 + 2 + 3 + .. + 199) = 5 * ((199*(199+1))/2)
+// // 15 + 30 + ... + 990 = 15 * (1 + 2 + 3 + .. + 66) = 15 * ((66*(66+1))/2)
+const multiplesOfXYSum = x => x*((Math.floor(n/x)*(Math.floor(n/x)+1))/2)
+totalSumMethodThree = multiplesOfXYSum(3) + multiplesOfXYSum(5) - multiplesOfXYSum(15);
+console.log('totalSumMethodThree', totalSumMethodThree)
