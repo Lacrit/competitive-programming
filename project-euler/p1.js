@@ -1,7 +1,7 @@
 let _ = require('lodash');
 const n = 999;
 
-// bruteforce o(n)
+// quick bruteforce o(n)
 
 const iter = _.range(1, n+1); // defines n elements 
 const isDivisibleBy = (i, x) =>  i % x == 0; // constant check 

@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const n = 4000000;
 
-// o(n) ? 
+// o(n) ? (TODO: figure how to use fp.flow in here)
 
 const isEven = i => i % 2 == 0;
 const isExceedingLimt = last => last < n;
