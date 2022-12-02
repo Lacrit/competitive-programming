@@ -1,55 +1,47 @@
 import { Pair } from './../types';
+import { LooseOptions, SuggestedElfOptions, WinOptions } from './constants';
+import { OpponentOptions, Outcomes } from './enums';
+
 const { readFileSync } = require( 'fs');
 
 const file: string = readFileSync('./data.txt', 'utf-8');
 
-enum GameOptions {
-    rock = 1,
-    paper=  2, 
-    scissors = 3
-};
-
-enum Outcomes {
-    draw = 3,
-    won = 6,
-    lost = 0
-}
-
-enum OpponentOptions {
-    A = GameOptions.rock,
-    B = GameOptions.paper,
-    C = GameOptions.scissors
-};
-
-enum ElfOptions {
-    X = GameOptions.rock,
-    Y = GameOptions.paper,
-    Z = GameOptions.scissors
-};
-
 const formatInputData = (fileData: string): Pair<string, string>[]  =>  fileData.split("\n").map(x => x.split(" ") as Pair<string, string>);
 
-const getRoundScore = (round:  Pair<string, string>) : number => {
-    let total = 0;
-    const [opponentOption, elfOption] = round;
-    total += ElfOptions[elfOption];
+const getCorrectElfOption = (round:  Pair<string, string>): number => {
+    const opponentOption: number = OpponentOptions[round[0]];
+    const suggestedElfOption: string = SuggestedElfOptions[round[1]];
 
-    if (OpponentOptions[opponentOption] === ElfOptions[elfOption]) {
+    const actualOption = (suggestedElfOption: string): number => ({
+        [SuggestedElfOptions.X]: LooseOptions[opponentOption],
+        [SuggestedElfOptions.Y]: opponentOption,
+        [SuggestedElfOptions.Z]: WinOptions[opponentOption]
+      })[suggestedElfOption];
+
+   return actualOption(suggestedElfOption);
+}
+
+const getRoundScore = (round: Pair<string, string>, options?: any) : number => {
+    let total = 0;
+    const { shouldGuessElfOption } = options ?? {};
+    const opponentOption: number = OpponentOptions[round[0]];
+    const elfOption: number = shouldGuessElfOption ? getCorrectElfOption(round) : SuggestedElfOptions[round[1]];
+    total += elfOption;
+
+    if (opponentOption === elfOption) {
         total += Outcomes.draw;
-    } else if (
-        (ElfOptions[elfOption] === GameOptions.paper && OpponentOptions[opponentOption] === GameOptions.rock) 
-        || (ElfOptions[elfOption] === GameOptions.rock && OpponentOptions[opponentOption] === GameOptions.scissors) 
-        || (ElfOptions[elfOption] === GameOptions.scissors && OpponentOptions[opponentOption] === GameOptions.paper) 
-    ) {
+    } else if (elfOption === WinOptions[opponentOption]) {
         total += Outcomes.won
     }   
     return total;
 }
 
-const getTotalScore = (games:  Pair<string, string>[] ): number => games.reduce((prev: number, curr: Pair<string, string>) => prev + getRoundScore(curr),0);
+const getTotalScore = (games:  Pair<string, string>[], options?: any): number => 
+    games.reduce((prev: number, curr: Pair<string, string>) => prev + getRoundScore(curr, options),0);
 
 const inputData = formatInputData(file);
 
-const part1 = getTotalScore(inputData)
+const part1 = getTotalScore(inputData);
+const part2 = getTotalScore(inputData, { shouldGuessElfOption: true });
 
-console.log(part1)
+console.log(part1, part2);

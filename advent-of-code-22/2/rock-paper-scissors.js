@@ -1,4 +1,5 @@
 "use strict";
+var _a, _b;
 exports.__esModule = true;
 var readFileSync = require('fs').readFileSync;
 var file = readFileSync('./data.txt', 'utf-8');
@@ -9,6 +10,16 @@ var GameOptions;
     GameOptions[GameOptions["scissors"] = 3] = "scissors";
 })(GameOptions || (GameOptions = {}));
 ;
+var WinOptions = (_a = {},
+    _a[GameOptions.rock] = GameOptions.paper,
+    _a[GameOptions.paper] = GameOptions.scissors,
+    _a[GameOptions.scissors] = GameOptions.rock,
+    _a);
+var LooseOptions = (_b = {},
+    _b[GameOptions.rock] = GameOptions.scissors,
+    _b[GameOptions.paper] = GameOptions.rock,
+    _b[GameOptions.scissors] = GameOptions.paper,
+    _b);
 var Outcomes;
 (function (Outcomes) {
     Outcomes[Outcomes["draw"] = 3] = "draw";
@@ -29,7 +40,13 @@ var ElfOptions;
     ElfOptions[ElfOptions["Z"] = 3] = "Z";
 })(ElfOptions || (ElfOptions = {}));
 ;
+var SuggestedElfOptions = {
+    X: "loose",
+    Y: "draw",
+    Z: "win"
+};
 var formatInputData = function (fileData) { return fileData.split("\n").map(function (x) { return x.split(" "); }); };
+//part 1
 var getRoundScore = function (round) {
     var total = 0;
     var opponentOption = round[0], elfOption = round[1];
@@ -37,14 +54,40 @@ var getRoundScore = function (round) {
     if (OpponentOptions[opponentOption] === ElfOptions[elfOption]) {
         total += Outcomes.draw;
     }
-    else if ((ElfOptions[elfOption] === GameOptions.paper && OpponentOptions[opponentOption] === GameOptions.rock)
-        || (ElfOptions[elfOption] === GameOptions.rock && OpponentOptions[opponentOption] === GameOptions.scissors)
-        || (ElfOptions[elfOption] === GameOptions.scissors && OpponentOptions[opponentOption] === GameOptions.paper)) {
+    else if (ElfOptions[elfOption] === WinOptions[opponentOption]) {
         total += Outcomes.won;
     }
     return total;
 };
-var getTotalScore = function (games) { return games.reduce(function (prev, curr) { return prev + getRoundScore(curr); }, 0); };
+var getCorrectElfOption = function (round) {
+    var opponentOption = OpponentOptions[round[0]];
+    var suggestedElfOption = SuggestedElfOptions[round[1]];
+    var actualOption = function (suggestedElfOption) {
+        var _a;
+        return (_a = {},
+            _a[SuggestedElfOptions.X] = LooseOptions[opponentOption],
+            _a[SuggestedElfOptions.Y] = opponentOption,
+            _a[SuggestedElfOptions.Z] = WinOptions[opponentOption],
+            _a)[suggestedElfOption];
+    };
+    return actualOption(suggestedElfOption);
+};
+//part 2
+var getRoundScoreEnhanced = function (round) {
+    var total = 0;
+    var opponentOption = round[0];
+    var elfOption = getCorrectElfOption(round);
+    total += elfOption;
+    if (OpponentOptions[opponentOption] === elfOption) {
+        total += Outcomes.draw;
+    }
+    else if (elfOption === WinOptions[opponentOption]) {
+        total += Outcomes.won;
+    }
+    return total;
+};
+var getTotalScore = function (games, sumFunc) { return games.reduce(function (prev, curr) { return prev + sumFunc(curr); }, 0); };
 var inputData = formatInputData(file);
-var test = getTotalScore(inputData);
-console.log(test);
+var part1 = getTotalScore(inputData, getRoundScore);
+var part2 = getTotalScore(inputData, getRoundScoreEnhanced);
+console.log(part1, part2);
