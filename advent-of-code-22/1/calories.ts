@@ -4,16 +4,22 @@ const file: string = readFileSync('./data.txt', 'utf-8');
 
 const formatInputData = (fileData: string): number[][] =>  fileData.split("\n\n").map(x => x.split("\n").map(Number));
 
+const sumElements = (elements: number[]): number => elements.reduce((prev: number, curr: number) => prev + curr, 0);
+
+// ====================================
 // part 1
-const findElfCarryingMostCalories = (elves: number[][]) =>  Math.max(...elves.map(x => x.reduce((prev: number, curr: number) => prev + curr, 0)));
+const findMostCalories = (elves: number[][]): number =>  Math.max(...elves.map(sumElements));
 
-// // part 2
-// const findCaloriesCarriedByTopNElves = (elves: number[][], n = 3) => {
-
-// }
+// part 2
+const findTotalCaloriesFromTopNElves = (elves: number[][], n = 3) => {
+    const totalCalories = elves.map(sumElements);
+    const topN = [...totalCalories].sort((a, b) => b - a).slice(0, n);
+    return sumElements(topN);
+}
 
 
 const inputData = formatInputData(file);
-const result = findElfCarryingMostCalories(inputData)
+const part1 = findMostCalories(inputData);
+const part2 = findTotalCaloriesFromTopNElves(inputData);
 
-console.log(result)
+console.log(part1, part2)
