@@ -1,6 +1,6 @@
 import { Pair } from './../types';
 import { LooseOptions, SuggestedElfOptions, WinOptions } from './constants';
-import { OpponentOptions, Outcomes } from './enums';
+import { ElfOptions, OpponentOptions, Outcomes } from './enums';
 
 const { readFileSync } = require( 'fs');
 
@@ -25,7 +25,7 @@ const getRoundScore = (round: Pair<string, string>, options?: any) : number => {
     let total = 0;
     const { shouldGuessElfOption } = options ?? {};
     const opponentOption: number = OpponentOptions[round[0]];
-    const elfOption: number = shouldGuessElfOption ? getCorrectElfOption(round) : SuggestedElfOptions[round[1]];
+    const elfOption: number = shouldGuessElfOption ? getCorrectElfOption(round) : ElfOptions[round[1]];
     total += elfOption;
 
     if (opponentOption === elfOption) {
