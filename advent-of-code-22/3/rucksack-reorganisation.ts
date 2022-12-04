@@ -15,26 +15,6 @@ const formatInputDataPart2 = (fileData: string): string[][]  =>  fileData.split(
 
 // ==================================================================
 
-const getCompartmentRepetitions = (compartment: string): Map<string, number> => {
-    const map = new Map<string, number>();
-    Array.from(compartment).forEach((char: string) => {
-        map.has(char) ? map.set(char, map.get(char)!+1) : map.set(char, 1)
-    })
-    return map
-}
-
-const findRucksackError = (rucksack: string[]): string | null => {
-    const [compartment1, compartment2] = rucksack;
-    const compartment1Repetitions = getCompartmentRepetitions(compartment1);
-    let commonChar: string | null = null;
-    Array.from(compartment2).forEach((char: string) => {
-        if (compartment1Repetitions.has(char)) {
-            commonChar = char;
-        }
-    })
-    return commonChar;
-}
-
 const getCharPriority = (char: string | null): number => {
     if (!char) return 0;
     if (char === char.toUpperCase())
@@ -42,8 +22,16 @@ const getCharPriority = (char: string | null): number => {
     return 1 + char.charCodeAt(0)-'a'.charCodeAt(0);
 }  
 
+const findRucksackError = (compartment1: Set<string>, compartment2: Set<string>): string => 
+    [compartment1, compartment2].reduce((prevValue: Set<string>, currValue: Set<string>) => 
+        new Set(Array.from(prevValue).filter((char: string) => currValue.has(char)))
+    ).values().next().value;
+
+
 const findCompartmentError = (compartments: string[][]) => 
-    compartments.reduce(( prevValue: number, currValue: string[]) => prevValue + getCharPriority(findRucksackError(currValue)),0);
+    compartments.reduce((prevValue: number, currValue: string[]) => 
+        prevValue + getCharPriority(findRucksackError(new Set(currValue[0]), new Set(currValue[1]))), 
+    0);
 
 
 const inputDataPart1 = formatInputDataPart1(file);
