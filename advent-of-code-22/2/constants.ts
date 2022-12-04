@@ -11,9 +11,3 @@ export const LooseOptions = {
     [GameOptions.paper]: GameOptions.rock,
     [GameOptions.scissors]: GameOptions.paper
 }
-
-export const SuggestedElfOptions = {
-    X: "loose",
-    Y: "draw",
-    Z: "win"
-};
