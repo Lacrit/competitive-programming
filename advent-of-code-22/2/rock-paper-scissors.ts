@@ -22,17 +22,17 @@ const getCorrectElfOption = (round:  Pair<string, string>): number => {
 }
 
 const getRoundScore = (round: Pair<string, string>, options?: any) : number => {
-    let total = 0;
     const { shouldGuessElfOption } = options ?? {};
     const opponentOption: number = OpponentOptions[round[0]];
     const elfOption: number = shouldGuessElfOption ? getCorrectElfOption(round) : ElfOptions[round[1]];
-    total += elfOption;
+    let total = elfOption;
 
     if (opponentOption === elfOption) {
         total += Outcomes.draw;
     } else if (elfOption === WinOptions[opponentOption]) {
         total += Outcomes.won
     }   
+
     return total;
 }
 
