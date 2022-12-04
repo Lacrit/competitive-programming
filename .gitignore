@@ -1,2 +1,4 @@
 # dependencies
 /node_modules
+
+/advent-of-code22/**/*.js
