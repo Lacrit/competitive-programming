@@ -18,8 +18,8 @@ const formatInputDataPart2 = (fileData: string): string[][]  =>  fileData.split(
 const getCharPriority = (char: string | null): number => {
     if (!char) return 0;
     if (char === char.toUpperCase())
-        return 27 + char.charCodeAt(0)-'A'.charCodeAt(0);
-    return 1 + char.charCodeAt(0)-'a'.charCodeAt(0);
+        return 27 + char.charCodeAt(0)-'A'.charCodeAt(0); // upper case letter priorities are 27 >= x <= 52
+    return 1 + char.charCodeAt(0)-'a'.charCodeAt(0); // lower case letter priorities are 1 >= x <= 27
 }  
 
 const findRucksackError = (compartment1: Set<string>, compartment2: Set<string>): string => 
