@@ -3,12 +3,7 @@ const { readFileSync } = require( 'fs');
 
 const file: string = readFileSync('./data.txt', 'utf-8');
 
-const formatInputDataPart1 = (fileData: string): string[][]  =>  fileData.split("\n").map(x => {
-    const half = Math.floor(x.length / 2);
-    return [x.slice(0, half), x.slice(half, x.length)];
-});
-
-const formatInputDataPart2 = (fileData: string): string[][]  =>  fileData.split("\n").map(x => {
+const formatInputData = (fileData: string): string[][]  =>  fileData.split("\n").map(x => {
     const half = Math.floor(x.length / 2);
     return [x.slice(0, half), x.slice(half, x.length)];
 });
@@ -17,9 +12,10 @@ const formatInputDataPart2 = (fileData: string): string[][]  =>  fileData.split(
 
 const getCharPriority = (char: string | null): number => {
     if (!char) return 0;
+    const charASCII = char.charCodeAt(0);
     if (char === char.toUpperCase())
-        return 27 + char.charCodeAt(0)-'A'.charCodeAt(0); // upper case letter priorities are 27 >= x <= 52
-    return 1 + char.charCodeAt(0)-'a'.charCodeAt(0); // lower case letter priorities are 1 >= x <= 27
+        return 27 + charASCII -'A'.charCodeAt(0); // upper case letter priorities are 27 >= x <= 52
+    return 1 +  charASCII -'a'.charCodeAt(0); // lower case letter priorities are 1 >= x <= 27
 }  
 
 const findRucksackError = (compartment1: Set<string>, compartment2: Set<string>): string => 
@@ -34,7 +30,7 @@ const findCompartmentError = (compartments: string[][]) =>
     0);
 
 
-const inputDataPart1 = formatInputDataPart1(file);
+const inputDataPart1 = formatInputData(file);
 const part1 = findCompartmentError(inputDataPart1);
 
 console.log(part1)
