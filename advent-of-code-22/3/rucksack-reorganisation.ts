@@ -10,12 +10,12 @@ const formatInputData = (fileData: string): string[][]  =>  fileData.split("\n")
 
 // ==================================================================
 
+//  upper case letter priorities are 27 >= x <= 52, lower case letter priorities are 1 >= x <= 27,
 const getCharPriority = (char: string | null): number => {
     if (!char) return 0;
     const charASCII = char.charCodeAt(0);
-    if (char === char.toUpperCase())
-        return 27 + charASCII -'A'.charCodeAt(0); // upper case letter priorities are 27 >= x <= 52
-    return 1 +  charASCII -'a'.charCodeAt(0); // lower case letter priorities are 1 >= x <= 27
+    return char === char.toUpperCase() ?  27 + charASCII -'A'.charCodeAt(0) : 1 +  charASCII -'a'.charCodeAt(0);
+
 }  
 
 const findRucksackError = (compartment1: Set<string>, compartment2: Set<string>): string => 
