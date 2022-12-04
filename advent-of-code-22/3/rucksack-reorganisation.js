@@ -1,9 +1,14 @@
 var readFileSync = require('fs').readFileSync;
 var file = readFileSync('./data.txt', 'utf-8');
-var formatInputData = function (fileData) { return fileData.split("\n").map(function (x) {
+var formatInputDataPart1 = function (fileData) { return fileData.split("\n").map(function (x) {
     var half = Math.floor(x.length / 2);
     return [x.slice(0, half), x.slice(half, x.length)];
 }); };
+var formatInputDataPart2 = function (fileData) { return fileData.split("\n").map(function (x) {
+    var half = Math.floor(x.length / 2);
+    return [x.slice(0, half), x.slice(half, x.length)];
+}); };
+// ==================================================================
 var getCompartmentRepetitions = function (compartment) {
     var map = new Map();
     Array.from(compartment).forEach(function (char) {
@@ -23,12 +28,15 @@ var findRucksackError = function (rucksack) {
     return commonChar;
 };
 var getCharPriority = function (char) {
-    var UPPERCASE_OFFSET = 38; // ASCII's value minus 7 
-    var LOWERCASE_OFFSET = 96; // ASCII's value minus 1
-    return char ? char.charCodeAt(0) - (char == char.toUpperCase() ? UPPERCASE_OFFSET : LOWERCASE_OFFSET) : 0;
+    if (!char)
+        return 0;
+    if (char === char.toUpperCase())
+        return 27 + char.charCodeAt(0) - 'A'.charCodeAt(0);
+    return 1 + char.charCodeAt(0) - 'a'.charCodeAt(0);
 };
 var findCompartmentError = function (compartments) {
     return compartments.reduce(function (prevValue, currValue) { return prevValue + getCharPriority(findRucksackError(currValue)); }, 0);
 };
-var inputData = formatInputData(file);
-console.log(findCompartmentError(inputData));
+var inputDataPart1 = formatInputDataPart1(file);
+var part1 = findCompartmentError(inputDataPart1);
+console.log(part1);

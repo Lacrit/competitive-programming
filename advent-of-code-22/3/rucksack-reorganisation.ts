@@ -36,10 +36,11 @@ const findRucksackError = (rucksack: string[]): string | null => {
 }
 
 const getCharPriority = (char: string | null): number => {
-    const UPPERCASE_OFFSET = 38; // ASCII's value minus 7 
-    const LOWERCASE_OFFSET = 96; // ASCII's value minus 1
-    return char ? char.charCodeAt(0)-(char == char.toUpperCase() ? UPPERCASE_OFFSET : LOWERCASE_OFFSET) : 0
-}
+    if (!char) return 0;
+    if (char === char.toUpperCase())
+        return 27 + char.charCodeAt(0)-'A'.charCodeAt(0);
+    return 1 + char.charCodeAt(0)-'a'.charCodeAt(0);
+}  
 
 const findCompartmentError = (compartments: string[][]) => 
     compartments.reduce(( prevValue: number, currValue: string[]) => prevValue + getCharPriority(findRucksackError(currValue)),0);
@@ -47,3 +48,5 @@ const findCompartmentError = (compartments: string[][]) =>
 
 const inputDataPart1 = formatInputDataPart1(file);
 const part1 = findCompartmentError(inputDataPart1);
+
+console.log(part1)
