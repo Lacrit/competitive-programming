@@ -8,23 +8,17 @@ const file: string = readFileSync('./data.txt', 'utf-8');
 
 const formatInputData = (fileData: string): Pair<string, string>[]  =>  fileData.split("\n").map(x => x.split(" ") as Pair<string, string>);
 
-const getCorrectElfOption = (round:  Pair<string, string>): number => {
-    const opponentOption: number = OpponentOptions[round[0]];
-    const suggestedElfOption: string = SuggestedElfOptions[round[1]];
-
-    const actualOption = (suggestedElfOption: string): number => ({
-        [SuggestedElfOptions.X]: LooseOptions[opponentOption],
-        [SuggestedElfOptions.Y]: opponentOption,
-        [SuggestedElfOptions.Z]: WinOptions[opponentOption]
-      })[suggestedElfOption];
-
-   return actualOption(suggestedElfOption);
-}
+const getCorrectElfOption = (opponentOption: number, suggestedElfOption: string): number => 
+  ({
+    [SuggestedElfOptions.X]: LooseOptions[opponentOption],
+    [SuggestedElfOptions.Y]: opponentOption,
+    [SuggestedElfOptions.Z]: WinOptions[opponentOption]
+  })[suggestedElfOption];
 
 const getRoundScore = (round: Pair<string, string>, options?: any) : number => {
     const { shouldGuessElfOption } = options ?? {};
     const opponentOption: number = OpponentOptions[round[0]];
-    const elfOption: number = shouldGuessElfOption ? getCorrectElfOption(round) : ElfOptions[round[1]];
+    const elfOption: number = shouldGuessElfOption ? getCorrectElfOption(opponentOption, SuggestedElfOptions[round[1]]) : ElfOptions[round[1]];
     let total = elfOption;
 
     if (opponentOption === elfOption) {
