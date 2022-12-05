@@ -16,7 +16,7 @@ const checkOverlapping = ([a1, a2]: Pair<number, number>, [b1, b2]: Pair<number,
     (b1 >= a1 && b1 <= a2 ) || 
     //   345 a
     // 123 b 
-    (b2 <= 2 && b2 >= a1) || 
+    (b2 <= a1 && b2 >= a1) || 
     // 123 b
     //   345 a 
     (a1 <= b2 && a1 >= b1) || 
