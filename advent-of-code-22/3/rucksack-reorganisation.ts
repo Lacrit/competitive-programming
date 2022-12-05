@@ -1,7 +1,7 @@
 import { Pair } from './../types';
 const { readFileSync } = require( 'fs');
 const file: string = readFileSync('advent-of-code-22/3/data.txt', 'utf-8');
-const formatInputData = (fileData: string): string[]  =>  fileData.split("\n");
+const lines: string[] = file.split("\n");
 
 // ==================================================================
 
@@ -35,8 +35,7 @@ const sumGroupPriorities = (rucksacks: string[], groupSize = 3) =>
         prevValue + (indx % groupSize + 1 === 1 ? getCharPriority(findCompartmentsError(rucksacks.slice(indx, indx + groupSize).map(x => new Set(x)))) : 0), 
     0);
 
-const inputData = formatInputData(file);
-const part1 = sumRucksackPriorities(inputData);
-const part2 = sumGroupPriorities(inputData)
+const part1 = sumRucksackPriorities(lines);
+const part2 = sumGroupPriorities(lines)
 
 console.log(part1, part2)
