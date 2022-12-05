@@ -1,12 +1,12 @@
 import { Pair } from './../types';
 import { LooseOptions, WinOptions } from './constants';
 import { ElfOptions, OpponentOptions, Outcomes } from './enums';
-
 const { readFileSync } = require( 'fs');
 
-const file: string = readFileSync('./data.txt', 'utf-8');
-
+const file: string = readFileSync('advent-of-code-22/2/data.txt', 'utf-8');
 const formatInputData = (fileData: string): Pair<string, string>[]  =>  fileData.split("\n").map(x => x.split(" ") as Pair<string, string>);
+
+// ==================================================================
 
 const getCorrectElfOption = (opponentOption: number, suggestedElfOption: string): number => 
   ({
@@ -34,7 +34,6 @@ const getTotalScore = (games:  Pair<string, string>[], options?: any): number =>
     games.reduce((prev: number, curr: Pair<string, string>) => prev + getRoundScore(curr, options),0);
 
 const inputData = formatInputData(file);
-
 const part1 = getTotalScore(inputData);
 const part2 = getTotalScore(inputData, { shouldGuessElfOption: true });
 
