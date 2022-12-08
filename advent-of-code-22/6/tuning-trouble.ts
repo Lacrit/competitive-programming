@@ -3,9 +3,7 @@ const file: string = readFileSync('advent-of-code-22/6/data.txt', 'utf-8');
 
 // ==================================================================
 
-const hasDuplicates = (values: string[]) => {
-    return new Set(values).size !== values.length;
-}
+const hasDuplicates = (values: string[]) => new Set(values).size !== values.length;
 
 const findStartMarker = (signal: string, elvesProtocolLength = 4) => {
     let processedCharsCount = 0;
